@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+#define MAX 100
+
+void printPolynomial(int poly[], int size) {
+    for (int i = size - 1; i >= 0; i--) {
+        if (poly[i] != 0) {
+            if (i != size - 1 && poly[i] > 0)
+                printf(" + ");
+            if (i == 0)
+                printf("%d", poly[i]);
+            else if (i == 1)
+                printf("%dx", poly[i]);
+            else
+                printf("%dx^%d", poly[i], i);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int poly1[MAX], poly2[MAX], result[MAX];
+    int deg1, deg2, maxDeg;
+
+   
+    printf("Enter degree of first polynomial: ");
+    scanf("%d", &deg1);
+    printf("Enter coefficients from constant term to x^%d:\n", deg1);
+    for (int i = 0; i <= deg1; i++) {
+        printf("Coefficient of x^%d: ", i);
+        scanf("%d", &poly1[i]);
+    }
+
+    
+    printf("\nEnter degree of second polynomial: ");
+    scanf("%d", &deg2);
+    printf("Enter coefficients from constant term to x^%d:\n", deg2);
+    for (int i = 0; i <= deg2; i++) {
+        printf("Coefficient of x^%d: ", i);
+        scanf("%d", &poly2[i]);
+    }
+
+    maxDeg = (deg1 > deg2) ? deg1 : deg2;
+
+    
+    for (int i = 0; i <= maxDeg; i++) {
+        int coeff1 = (i <= deg1) ? poly1[i] : 0;
+        int coeff2 = (i <= deg2) ? poly2[i] : 0;
+        result[i] = coeff1 + coeff2;
+    }
+
+    
+    printf("\nSum of the two polynomials is:\n");
+    printPolynomial(result, maxDeg + 1);
+
+    return 0;
+}
