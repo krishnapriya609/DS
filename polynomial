@@ -32,9 +32,9 @@ int main() {
 
     
     for(i = 0; i <= maxDeg; i++) {
-        int coeff1 = (i <= deg1) ? poly1[i] : 0;   // take coefficient if exists
+        int coeff1 = (i <= deg1) ? poly1[i] : 0;   
         int coeff2 = (i <= deg2) ? poly2[i] : 0;
-        result[i] = coeff1 + coeff2;               // sum them
+        result[i] = coeff1 + coeff2;               
     }
 
     
@@ -42,7 +42,7 @@ int main() {
 
     
     for(i = maxDeg; i >= 0; i--) {
-        if(result[i] == 0) continue;  // skip zero terms
+        if(result[i] == 0) continue;  
 
        
         if(i != maxDeg && result[i] > 0)
