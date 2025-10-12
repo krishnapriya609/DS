@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int coeff;
+    int exp;
+    struct Node *next;
+};
+
+struct Node* createNode(int c, int e) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->coeff = c;
+    newNode->exp = e;
+    newNode->next = NULL;
+    return newNode;
+}
+struct Node* insert(struct Node* head, int c, int e) {
+    struct Node* newNode = createNode(c, e);
+    if (head == NULL)
+        return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+struct Node* addPolynomials(struct Node* poly1, struct Node* poly2) {
+    struct Node *result = NULL, *temp1 = poly1, *temp2 = poly2;
+
+    while (temp1 != NULL && temp2 != NULL) {
+        if (temp1->exp > temp2->exp) {
+            result = insert(result, temp1->coeff, temp1->exp);
+            temp1 = temp1->next;
+        }
+        else if (temp1->exp < temp2->exp) {
+            result = insert(result, temp2->coeff, temp2->exp);
+            temp2 = temp2->next;
+        }
+        else {
+            int sum = temp1->coeff + temp2->coeff;
+            if (sum != 0) // Avoid zero terms
+                result = insert(result, sum, temp1->exp);
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+    }
+
+    while (temp1 != NULL) {
+        result = insert(result, temp1->coeff, temp1->exp);
+        temp1 = temp1->next;
+    }
+    while (temp2 != NULL) {
+        result = insert(result, temp2->coeff, temp2->exp);
+        temp2 = temp2->next;
+    }
+
+    return result;
+}
+
+void display(struct Node* poly) {
+    struct Node* temp = poly;
+    while (temp != NULL) {
+        printf("%dx^%d", temp->coeff, temp->exp);
+        temp = temp->next;
+        if (temp != NULL)
+            printf(" + ");
+    }
+    printf("\n");
+}
+
+
+int main() {
+    struct Node *poly1 = NULL, *poly2 = NULL, *result = NULL;
+    int n1, n2, coeff, exp;
+
+    printf("Enter number of terms in first polynomial: ");
+    scanf("%d", &n1);
+    for (int i = 0; i < n1; i++) {
+        printf("Enter coefficient and exponent: ");
+        scanf("%d %d", &coeff, &exp);
+        poly1 = insert(poly1, coeff, exp);
+    }
+
+    printf("Enter number of terms in second polynomial: ");
+    scanf("%d", &n2);
+    for (int i = 0; i < n2; i++) {
+        printf("Enter coefficient and exponent: ");
+        scanf("%d %d", &coeff, &exp);
+        poly2 = insert(poly2, coeff, exp);
+    }
+
+    printf("\nFirst Polynomial: ");
+    display(poly1);
+    printf("Second Polynomial: ");
+    display(poly2);
+
+    result = addPolynomials(poly1, poly2);
+
+    printf("\nResultant Polynomial after Addition: ");
+    display(result);
+
+    return 0;
+}
