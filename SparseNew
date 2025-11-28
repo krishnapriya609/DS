@@ -1,0 +1,129 @@
+#include <stdio.h>
+
+void convertToTuple(int r, int c, int M[10][10], int T[50][3]) {
+    int k = 1;  // index for tuple
+    T[0][0] = r;
+    T[0][1] = c;
+
+    for(int i = 0; i < r; i++){
+        for(int j = 0; j < c; j++){
+            if(M[i][j] != 0){
+                T[k][0] = i;
+                T[k][1] = j;
+                T[k][2] = M[i][j];
+                k++;
+            }
+        }
+    }
+
+    T[0][2] = k - 1; // number of non-zero values
+}
+
+void printTuple(int T[50][3]) {
+    int n = T[0][2];
+    for(int i = 0; i <= n; i++){
+        printf("%d %d %d\n", T[i][0], T[i][1], T[i][2]);
+    }
+}
+
+int main() {
+    int r, c;
+    printf("Enter number of rows and columns: ");
+    scanf("%d %d", &r, &c);
+
+    int A[10][10], B[10][10];
+    int TA[50][3], TB[50][3], TS[50][3], TT[50][3];
+
+    // Input Matrix A
+    printf("Enter Matrix A:\n");
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            scanf("%d", &A[i][j]);
+
+    // Input Matrix B
+    printf("Enter Matrix B:\n");
+    for(int i = 0; i < r; i++)
+        for(int j = 0; j < c; j++)
+            scanf("%d", &B[i][j]);
+
+    // Convert A & B to tuple
+    convertToTuple(r, c, A, TA);
+    convertToTuple(r, c, B, TB);
+
+    // Print tuple form
+    printf("\n3-Tuple Form of Matrix A:\n");
+    printTuple(TA);
+
+    printf("\n3-Tuple Form of Matrix B:\n");
+    printTuple(TB);
+
+    // Addition of tuples
+    int i = 1, j = 1, k = 1;
+    TS[0][0] = r;
+    TS[0][1] = c;
+
+    while(i <= TA[0][2] && j <= TB[0][2]) {
+        if(TA[i][0] == TB[j][0] && TA[i][1] == TB[j][1]) {
+            TS[k][0] = TA[i][0];
+            TS[k][1] = TA[i][1];
+            TS[k][2] = TA[i][2] + TB[j][2];
+            i++; j++; k++;
+        }
+        else if(TA[i][0] < TB[j][0] ||
+               (TA[i][0] == TB[j][0] && TA[i][1] < TB[j][1])) {
+            TS[k][0] = TA[i][0];
+            TS[k][1] = TA[i][1];
+            TS[k][2] = TA[i][2];
+            i++; k++;
+        }
+        else {
+            TS[k][0] = TB[j][0];
+            TS[k][1] = TB[j][1];
+            TS[k][2] = TB[j][2];
+            j++; k++;
+        }
+    }
+
+    // remaining elements
+    while(i <= TA[0][2]) {
+        TS[k][0] = TA[i][0];
+        TS[k][1] = TA[i][1];
+        TS[k][2] = TA[i][2];
+        i++; k++;
+    }
+
+    while(j <= TB[0][2]) {
+        TS[k][0] = TB[j][0];
+        TS[k][1] = TB[j][1];
+        TS[k][2] = TB[j][2];
+        j++; k++;
+    }
+
+    TS[0][2] = k - 1;
+
+    // Print Sum tuple
+    printf("\n3-Tuple Form of Sum (A + B):\n");
+    printTuple(TS);
+
+    // Transpose of Sum Tuple
+    TT[0][0] = TS[0][1];
+    TT[0][1] = TS[0][0];
+    TT[0][2] = TS[0][2];
+
+    k = 1;
+    for(int col = 0; col < TS[0][1]; col++) {
+        for(int p = 1; p <= TS[0][2]; p++) {
+            if(TS[p][1] == col) {
+                TT[k][0] = TS[p][1];
+                TT[k][1] = TS[p][0];
+                TT[k][2] = TS[p][2];
+                k++;
+            }
+        }
+    }
+
+    printf("\nTranspose of Resultant (in 3-Tuple Form):\n");
+    printTuple(TT);
+
+    return 0;
+}
