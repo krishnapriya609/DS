@@ -104,6 +104,7 @@ void deleteRear() {
     }
 }
 
+//////////////////////////////////////
 void display() {
     if (front == -1) {
         printf("Deque is empty!\n");
@@ -116,4 +117,21 @@ void display() {
         }
         printf("%d\n", queue[rear]);
     }
+}
+//////////////////////////////////////////
+void display() {
+    if (front == -1) {
+        printf("Deque is empty!\n");
+        return;
+    }
+
+    printf("Deque elements: ");
+
+    for (int i = front; ; i = (i + 1) % MAX) {
+        printf("%d ", queue[i]);
+        if (i == rear)   // stop when last element printed
+            break;
+    }
+
+    printf("\n");
 }
