@@ -5,7 +5,7 @@
 int queue[SIZE];
 int front = -1;
 int rear = -1;
-
+////////////////////////////////////////////////////
 int isFull() {
     return (front == (rear + 1) % SIZE);
 }
@@ -31,7 +31,24 @@ void enqueue(int value) {
     queue[rear] = value;
     printf("Enqueued: %d\n", value);
 }
+//////////////////////////////////////////////////////////////
+void enqueue(int value) {
+    if (front == (rear + 1) % SIZE) {
+        printf("Queue Overflow! Cannot enqueue %d\n", value);
+        return;
+    }
 
+    if (front == -1) {
+        front = rear = 0;
+    } 
+    
+    else {
+        rear = (rear + 1) % SIZE;
+    }
+
+    queue[rear] = value;
+    printf("Enqueued: %d\n", value);
+}
 int dequeue() {
     if (isEmpty()) {
         printf("Queue Underflow! Cannot dequeue\n");
