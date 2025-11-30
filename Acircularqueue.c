@@ -49,6 +49,7 @@ void enqueue(int value) {
     queue[rear] = value;
     printf("Enqueued: %d\n", value);
 }
+/////////////////////////////////////////////////////
 int dequeue() {
     if (isEmpty()) {
         printf("Queue Underflow! Cannot dequeue\n");
