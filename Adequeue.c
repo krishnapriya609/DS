@@ -47,18 +47,18 @@ int main() {
     }
      return 0;
 }
-void insertFront(int x) {
-    if ((front == 0 && rear == MAX - 1) || (front == rear + 1)) {
+void insertRear(int x) {
+
+    if ((rear + 1) % MAX == front) {
         printf("Overflow: Deque is full!\n");
-    } else if (front == -1 && rear == -1) {
+    } 
+    else if (front == -1) {
         front = rear = 0;
-        queue[front] = x;
-    } else if (front == 0) {
-        front = MAX - 1;
-        queue[front] = x;
-    } else {
-        front = front - 1;
-        queue[front] = x;
+        queue[rear] = x;
+    } 
+    else {
+        rear = (rear + 1) % MAX;
+        queue[rear] = x;
     }
 }
 void insertRear(int x) {
