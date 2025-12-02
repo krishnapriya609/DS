@@ -61,44 +61,66 @@ void insertRear(int x) {
         queue[rear] = x;
     }
 }
-void insertRear(int x) {
-    if ((front == 0 && rear == MAX - 1) || (rear == front - 1)) {
+void insertFront(int x) {
+    if ((front == 0 && rear == MAX - 1) || (front == (rear + 1) % MAX)) {
         printf("Overflow: Deque is full!\n");
-    } else if (front == -1 && rear == -1) {
+    } 
+    else if (front == -1) {
+        front = rear = 0;
+        queue[front] = x;
+    } 
+    else if (front == 0) {
+        front = MAX - 1;
+        queue[front] = x;
+    } 
+    else {
+        front = front - 1;
+        queue[front] = x;
+    }
+}
+
+void insertRear(int x) {
+    // ✅ Correct full condition
+    if ((rear + 1) % MAX == front) {
+        printf("Overflow: Deque is full!\n");
+    } 
+    else if (front == -1) {
         front = rear = 0;
         queue[rear] = x;
-    } else if (rear == MAX - 1) {
-        rear = 0;
-        queue[rear] = x;
-    } else {
-        rear = rear + 1;
+    } 
+    else {
+        rear = (rear + 1) % MAX;
         queue[rear] = x;
     }
 }
+
 void deleteFront() {
     if (front == -1) {
         printf("Underflow: Deque is empty!\n");
-    } else if (front == rear) {
+    } 
+    else if (front == rear) {
         printf("Deleted element from front: %d\n", queue[front]);
         front = rear = -1;
-    } else if (front == MAX - 1) {
+    } 
+    else {
         printf("Deleted element from front: %d\n", queue[front]);
-        front = 0;
-    } else {
-        printf("Deleted element from front: %d\n", queue[front]);
-        front = front + 1;
+        front = (front + 1) % MAX;
     }
 }
+
 void deleteRear() {
     if (front == -1) {
         printf("Underflow: Deque is empty!\n");
-    } else if (front == rear) {
+    } 
+    else if (front == rear) {
         printf("Deleted element from rear: %d\n", queue[rear]);
         front = rear = -1;
-    } else if (rear == 0) {
+    } 
+    else if (rear == 0) {
         printf("Deleted element from rear: %d\n", queue[rear]);
         rear = MAX - 1;
-    } else {
+    } 
+    else {
         printf("Deleted element from rear: %d\n", queue[rear]);
         rear = rear - 1;
     }
